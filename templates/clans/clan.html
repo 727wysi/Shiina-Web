@@ -26,18 +26,10 @@
                     <div class="row mb-3 align-items-center">
                     <div class="col-auto">
                         <div class="user-collage user-collage-lg">
-                            <#assign count = 0>
-                            <#list members as collage>
-                                <#assign count = count + 1>
-                                <img 
-                                    src="${avatarServer}/${collage.id}" 
-                                    class="w-100 h-100 object-fit-cover" 
-                                    alt="User collage image"
-                                >
-                                <#if count == 4>
-                                    <#break>
-                                </#if>
-                            </#list>
+<img src="https://a.727wysi.fun/clans/${clan.id}"
+     class="clan-avatar-img rounded mb-2"
+     alt="Clan avatar"
+     style="width:84px;height:84px;object-fit:cover;">
                         </div>
                     </div>
                     <div class="col-auto me-auto">

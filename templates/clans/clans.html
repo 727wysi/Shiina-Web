@@ -70,15 +70,10 @@
                                 
                                 <!-- Clan Avatar Collage -->
                                 <div class="me-3">
-                                    <div class="d-grid user-collage user-collage-sm">
-                                        <#list clan.userCollage as collage>
-                                            <img 
-                                                src="${avatarServer}/${collage}" 
-                                                class="w-100 h-100 object-fit-cover" 
-                                                alt="User collage image"
-                                            >
-                                        </#list>
-                                    </div>
+<img src="https://a.727wysi.fun/clans/${clan.id}"
+                                         class="clan-avatar-img rounded"
+                                         alt="Clan avatar"
+                                         style="width:48px;height:48px;object-fit:cover;">
                                 </div>
                                 
                                 <!-- Clan Info -->

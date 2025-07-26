@@ -83,6 +83,7 @@ import dev.osunolimits.routes.get.simple.Register;
 import dev.osunolimits.routes.get.user.Relations;
 import dev.osunolimits.routes.get.user.Settings;
 import dev.osunolimits.routes.post.HandleAvatarChange;
+import dev.osunolimits.routes.post.HandleClanAvatarChange;
 import dev.osunolimits.routes.post.HandleBannerChange;
 import dev.osunolimits.routes.post.HandleComment;
 import dev.osunolimits.routes.post.HandleFlagChange;
@@ -180,6 +181,7 @@ public class App {
         WebServer.get("/settings", new Settings());
         WebServer.get("/friends", new Relations());
         WebServer.post("/settings/avatar", new HandleAvatarChange());
+        WebServer.post("/clan/:id/avatar", new HandleClanAvatarChange());
         WebServer.post("/settings/country", new HandleFlagChange());
         WebServer.post("/settings/name", new HandleNameChange());
         WebServer.post("/settings/mode", new HandleModeChange());

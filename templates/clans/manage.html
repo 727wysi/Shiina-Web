@@ -4,6 +4,42 @@
             <div class="card-header mb-1 bg-secondary d-flex justify-content-between align-items-center py-4">
                 <span class="h1 fw-bold
                 mb-0">Settings of ${clan.name} [${clan.tag}]</span>
+<img src="https://a.727wysi.fun/clans/${clan.id}"
+                     class="clan-avatar-img rounded ms-3"
+                     alt="Clan avatar"
+                     style="width:96px;height:96px;object-fit:cover;vertical-align:middle;">
+
+                <#if clan.owner == user.id>
+                <form id="clan-avatar-form" action="/clan/${clan.id}/avatar" method="post" enctype="multipart/form-data" class="d-inline-block ms-3">
+                    <label for="clan-avatar-upload" class="btn btn-primary btn-sm mb-1">Upload Avatar</label>
+                    <input type="file" id="clan-avatar-upload" name="avatar" accept=".png,.gif" style="display:none;">
+                </form>
+                <script>
+                document.getElementById('clan-avatar-upload').addEventListener('change', function() {
+                var form = document.getElementById('clan-avatar-form');
+                var formData = new FormData(form);
+                var file = formData.get('avatar');
+                console.log('Selected file:', file);
+                if (!file || !file.name) {
+                    alert('No file selected!');
+                    return;
+                }
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin'
+                }).then(function(response) {
+                    if (!response.ok) {
+                        response.text().then(t => alert('Upload failed: ' + t));
+                    } else {
+                        window.location = "/clan/${clan.id}/settings";
+                    }
+                }).catch(function(error) {
+                    alert('Network error: ' + error);
+                });
+            });
+                </script>
+                </#if>
 
             </div>
             <div class="shiina-pill mx-1 my-2 mx-md-4 d-flex align-items-center">

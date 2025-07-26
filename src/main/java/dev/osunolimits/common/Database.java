@@ -154,7 +154,7 @@ public class Database {
      */
     public void connectToMySQL(String host, String user, String password, String database,
             ServerTimezone serverTimezone) {
-        String url = "jdbc:mysql://" + host + ":3306/" + database + "?serverTimezone=" + serverTimezone;
+        String url = "jdbc:mysql://" + host + ":3306/" + database + "?serverTimezone=" + serverTimezone + "&allowPublicKeyRetrieval=true";
         hikariConfig
                 .setJdbcUrl(url);
         hikariConfig.setUsername(user);
