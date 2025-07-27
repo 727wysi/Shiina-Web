@@ -1,0 +1,46 @@
+<#include "/ap/assets/base.html">
+<div class="container-fluid bg-body-tertiary border-bottom p-3">
+  <div class="row align-items-center">
+    <div class="col-auto">
+      <h5 class="mb-0">
+        <i class="fa-solid fa-users"></i> Clans Moderation
+      </h5>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt-2">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Tag</th>
+                        <th>Owner</th>
+                        <th>Members</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <#list clans as clan>
+                    <tr>
+                        <td>${clan.id}</td>
+                        <td>${clan.name}</td>
+                        <td>${clan.tag}</td>
+                        <td>${clan.ownerName}</td>
+                        <td>${clan.members}</td>
+                        <td>
+                            <a href="/ap/clan?id=${clan.id}" class="btn btn-sm btn-primary">View</a>
+                            <a href="/clan/${clan.id}" class="btn btn-sm btn-secondary" target="_blank">Open</a>
+                        </td>
+                    </tr>
+                    </#list>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<#include "/ap/assets/pagination.html">

@@ -154,6 +154,17 @@ public class User extends Shiina {
 
         if(userPriv.contains(PermissionHelper.Privileges.SUPPORTER)) {
             groups.add(ShiinaSupporterBadge.getInstance().getGroup());
+            String badgeFolder = App.env.get("BADGEFOLDER");
+            String avatarSrv = App.env.get("AVATARSRV");
+            String[] exts = {".png", ".jpg", ".jpeg", ".gif"};
+            for (String ext : exts) {
+                java.io.File f = new java.io.File(badgeFolder + java.io.File.separator + id + ext);
+                if (f.exists()) {
+                    shiina.data.put("badge_url", avatarSrv + "/badges/" + id + ext);
+                    shiina.data.put("badge_ext", ext);
+                    break;
+                }
+            }
         }
 
         shiina.data.put("groups", userInfo.getGroups());

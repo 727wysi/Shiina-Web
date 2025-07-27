@@ -85,6 +85,7 @@ import dev.osunolimits.routes.get.user.Settings;
 import dev.osunolimits.routes.post.HandleAvatarChange;
 import dev.osunolimits.routes.post.HandleClanAvatarChange;
 import dev.osunolimits.routes.post.HandleBannerChange;
+import dev.osunolimits.routes.post.HandleBadgeChange;
 import dev.osunolimits.routes.post.HandleComment;
 import dev.osunolimits.routes.post.HandleFlagChange;
 import dev.osunolimits.routes.post.HandleLogin;
@@ -187,6 +188,7 @@ public class App {
         WebServer.post("/settings/mode", new HandleModeChange());
         WebServer.post("/settings/userpage", new HandleUserpageChange());
         WebServer.post("/settings/banner", new HandleBannerChange());
+        WebServer.post("/settings/badge", new HandleBadgeChange());
 
         WebServer.get("/login", new Login());
         WebServer.get("/register", new Register());
@@ -222,6 +224,8 @@ public class App {
         WebServer.get("/ap/maprequests", new MapRequests());
         WebServer.get("/ap/mapranking", new MapRanking());
 
+        WebServer.get("/ap/clan", new dev.osunolimits.routes.ap.get.ClanModeration());
+        WebServer.get("/ap/clans", new dev.osunolimits.routes.ap.get.ClansModeration());
         WebServer.get("/ap/multiaccs", new Multiaccounts());
         WebServer.get("/ap/audit", new Audit());
         WebServer.get("/ap/chat", new ChatExplorer());
@@ -243,6 +247,8 @@ public class App {
         WebServer.post("/ap/settings/update", new ChangeSetting());
         WebServer.post("/ap/maprequests/deny", new DenyMapRequest());
         WebServer.post("/ap/mapranking", new HandleMapStatusUpdate());
+        WebServer.post("/ap/clan/delete", new dev.osunolimits.routes.ap.post.HandleClanDelete());
+        WebServer.post("/ap/clan/avatar/delete", new dev.osunolimits.routes.ap.post.HandleClanAvatarDelete());
 
         WebServer.get("/banner/:id", new GetBanner());
         GroupRegistry.revalidate();

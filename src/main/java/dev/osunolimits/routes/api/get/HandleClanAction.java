@@ -56,7 +56,9 @@ public class HandleClanAction extends Shiina {
                 ResultSet checkClanDenyRS = shiina.mysql.Query(checkClanDeny, userid, clanid);
                 if(checkClanDenyRS.next()) {
                     shiina.mysql.Exec("DELETE FROM `sh_clan_denied` WHERE `userid` = ? AND `clanid` = ?", userid, clanid);
-                    new OnUserUnDenyClanEvent(clanid, userid, shiina.user.id).callListeners();;
+                    // Аудит: кто сделал, что сделал, кому сделал, когда сделал
+                    shiina.mysql.Exec("INSERT INTO `sh_clan_audit` (`actor_id`, `action`, `target_id`) VALUES (?, ?, ?)", shiina.user.id, "UNDENY", userid);
+                    new OnUserUnDenyClanEvent(clanid, userid, shiina.user.id).callListeners();
                 }
                 break;
             case "DENY":
@@ -64,6 +66,8 @@ public class HandleClanAction extends Shiina {
                 if(checkClanPendingRS.next()) {
                     shiina.mysql.Exec("DELETE FROM `sh_clan_pending` WHERE `userid` = ? AND `clanid` = ?", userid, clanid);
                     shiina.mysql.Exec(insertClanDeny, userid, clanid, System.currentTimeMillis() / 1000);
+                    // Аудит
+                    shiina.mysql.Exec("INSERT INTO `sh_clan_audit` (`actor_id`, `action`, `target_id`) VALUES (?, ?, ?)", shiina.user.id, "DENY", userid);
                     new OnUserDenyClanEvent(clanid, userid, shiina.user.id).callListeners();
                 }
                 break;
@@ -72,12 +76,16 @@ public class HandleClanAction extends Shiina {
                 if(checkClanPendingRS2.next()) {
                     shiina.mysql.Exec("DELETE FROM `sh_clan_pending` WHERE `userid` = ?", userid);
                     shiina.mysql.Exec("UPDATE `users` SET `clan_id` = ?, `clan_priv` = 1 WHERE `id` = ?", clanid, userid);
+                    // Аудит
+                    shiina.mysql.Exec("INSERT INTO `sh_clan_audit` (`actor_id`, `action`, `target_id`) VALUES (?, ?, ?)", shiina.user.id, "ACCEPT", userid);
                     new OnUserJoinClanEvent(clanid, userid, shiina.user.id).callListeners();
                 }
                 break;
             case "KICK":
                 shiina.mysql.Exec("UPDATE `users` SET `clan_id` = 0, `clan_priv` = 0 WHERE `id` = ?", userid);
                 shiina.mysql.Exec(insertClanDeny, userid, clanid, System.currentTimeMillis() / 1000);
+                // Аудит
+                shiina.mysql.Exec("INSERT INTO `sh_clan_audit` (`actor_id`, `action`, `target_id`) VALUES (?, ?, ?)", shiina.user.id, "KICK", userid);
                 new OnUserGetKickedClanEvent(clanid, userid, shiina.user.id).callListeners();
                 break;
             default:

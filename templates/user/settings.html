@@ -125,11 +125,29 @@
                     </div>
                     <form id="banner-upload-form" data-turbo="false" action="/settings/banner" method="post"
                             enctype="multipart/form-data" class="w-100 mt-1" onsubmit="return handleBannerUpload(event)">
-                            <div class="form-group">
-                                <input type="file" name="banner" id="banner" accept=".png" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-2">Upload</button>
-                        </form>
+                        <div class="form-group">
+                            <input type="file" name="banner" id="banner" accept=".png" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+                    </form>
+
+                    <#if userPriv?seq_contains("SUPPORTER")>
+                    <div class="shiina-pill mt-3 m-0 mb-2 d-flex align-items-center">
+                        <div class="shiina-pill-icon"></div>
+                        <span>Badge</span>
+                    </div>
+                    <form id="badge-upload-form" data-turbo="false" action="/settings/badge" method="post"
+                        enctype="multipart/form-data" class="w-100 mt-1">
+                        <div class="form-group">
+                            <input type="file" name="badge" id="badge" accept=".png,.gif" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+                    </form>
+                    <#-- Optionally show current badge if exists -->
+                    <div class="mt-2">
+                        <img src="${avatarServer}/badges/${user.id}" alt="Badge" style="max-height:48px;max-width:128px;">
+                    </div>
+                    </#if>
                 </div>
 
 

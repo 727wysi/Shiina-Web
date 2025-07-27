@@ -48,10 +48,20 @@
                 <!-- Player Name -->
                 <div class="col-12 col-md-9 d-flex flex-column justify-content-center text-white">
                     <div class="mb-2">
-                        <h1 class="display-4 fw-bold mb-2 shiina-player-name <#if uprivs?seq_contains("SUPPORTER")>supporter</#if>">
-                            ${u.player.info.name}
-                        </h1>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <h1 class="display-4 fw-bold shiina-player-name <#if uprivs?seq_contains('SUPPORTER')>supporter</#if> mb-0" style="line-height: 1;">
+                                ${u.player.info.name}
+                            </h1>
+                            <#if badge_url??>
+                                <img id="profile-badge-inline" src="${badge_url?replace('.png','')}" alt="Badge"
+                                    style="height:36px; min-width:48px; max-width:120px; object-fit:cover; border-radius:18px; box-shadow:0 2px 8px rgba(0,0,0,0.12); border:1.2px solid rgba(255,255,255,0.5); background:#222; margin-left:4px; position:relative; top:4px; align-self:center; vertical-align:middle; display:inline-block;"
+                                    onerror="this.style.display='none'">
+                            </#if>
+                        </div>
                         <div class="groupPlace d-flex flex-wrap gap-2 mt-2 mb-3">
+                            <#if badge_url??>
+                                <span style="display:none;"></span>
+                            </#if>
                             <#list groups as group>
                                 <span class="badge shiina-badge bg-light bg-opacity-25 text-white py-2 rounded-pill pe-3"><span class="groupEmoji me-2">${group.emoji}</span>${group.name}</span>
                             </#list>

@@ -1,0 +1,116 @@
+<#include "/ap/assets/base.html">
+
+<div class="container-fluid bg-body-tertiary border-bottom p-3">
+  <div class="row align-items-center">
+    <div class="col-auto">
+      <h5 class="mb-0">
+        <i class="fa-solid fa-users"></i> Clan Moderation
+      </h5>
+    </div>
+    <div class="col-auto ms-auto">
+      <a href="/ap/clans" class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-arrow-left"></i> Back to Clans</a>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt-2">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-3">${clan.name} <span class="badge bg-secondary">${clan.tag}</span></h4>
+      <div class="row mb-3">
+        <div class="col-md-3 text-center">
+          <img src="${clan.avatarUrl}" class="img-fluid rounded mb-2" style="max-width: 120px;">
+          <form action="/ap/clan/avatar/delete" method="post" style="margin-bottom: 8px;">
+            <input type="hidden" name="clanId" value="${clan.id}">
+            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete clan avatar?');">Delete Avatar</button>
+          </form>
+          <div class="small text-muted">ID: ${clan.id}</div>
+        </div>
+        <div class="col-md-9">
+          <dl class="row mb-0">
+            <dt class="col-sm-3">Owner</dt>
+            <dd class="col-sm-9"><a href="/ap/user?id=${clan.ownerId}">${clan.ownerName}</a></dd>
+            <dt class="col-sm-3">Members</dt>
+            <dd class="col-sm-9">${clan.members}</dd>
+            <dt class="col-sm-3">Created</dt>
+            <dd class="col-sm-9">${clan.createdAt!"-"}</dd>
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">${clan.description!"-"}</dd>
+          </dl>
+        </div>
+      </div>
+      <hr>
+      <h5>Clan Action Audit Log</h5>
+      <table class="table table-sm table-bordered">
+        <thead>
+          <tr>
+            <th>Initiator</th>
+            <th>Operation</th>
+            <th>Recipient</th>
+            <th>Date &amp; Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <#if auditLog?size == 0>
+            <tr><td colspan="4" class="text-center text-muted">No audit entries available.</td></tr>
+          <#else>
+          <#list auditLog as entry>
+            <tr>
+              <td><a href="/ap/user?id=${entry.actorId}">${entry.actorName}</a></td>
+              <td>${entry.action}</td>
+              <td><#if entry.targetId??><a href="/ap/user?id=${entry.targetId}">${entry.targetName!"-"}</a><#else>-</#if></td>
+              <td>${entry.createdAt}</td>
+            </tr>
+          </#list>
+          </#if>
+        </tbody>
+      </table>
+      <h5>Members</h5>
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${clan.ownerId}</td>
+            <td><a href="/ap/user?id=${clan.ownerId}">${clan.ownerName}</a> <span class="badge bg-primary">Owner</span></td>
+            <td>Owner</td>
+            <td></td>
+          </tr>
+          <#if clan.membersList?size == 0>
+            <tr><td colspan="4" class="text-center text-muted">No members found.</td></tr>
+          <#else>
+            <#list clan.membersList as member>
+              <#if member.id != clan.ownerId>
+                <tr>
+                  <td>${member.id}</td>
+                  <td><a href="/ap/user?id=${member.id}">${member.name}</a></td>
+                  <td>${member.priv}</td>
+                  <td>
+                    <form action="/ap/clan/kick" method="post" style="display:inline">
+                      <input type="hidden" name="clanId" value="${clan.id}">
+                      <input type="hidden" name="userId" value="${member.id}">
+                      <button type="submit" class="btn btn-sm btn-danger">Kick</button>
+                    </form>
+                  </td>
+                </tr>
+              </#if>
+            </#list>
+          </#if>
+        </tbody>
+      </table>
+      <hr>
+      <div class="d-flex justify-content-end">
+        <form action="/ap/clan/delete" method="post" onsubmit="return confirm('Are you sure you want to delete this clan?');">
+          <input type="hidden" name="clanId" value="${clan.id}">
+          <button type="submit" class="btn btn-outline-danger">Delete Clan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
